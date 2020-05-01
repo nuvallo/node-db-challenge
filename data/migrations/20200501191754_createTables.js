@@ -24,8 +24,33 @@ exports.up = async function (knex) {
       .onDelete("RESTRICT")
       .onUpdate("CASCADE");
   });
+  await knex.schema.createTable("resourceList", (tbl) => {
+    tbl
+      .integer("project_id")
+      .unsigned()
+      .notNullable()
+      .references("id")
+      // this table must exist already
+      .inTable("projects")
+      .onUpdate("CASCADE")
+      .onDelete("CASCADE");
+    tbl
+      .integer("resource_id")
+      // forces integer to be positive
+      .unsigned()
+      .notNullable()
+      .references("id")
+      // this table must exist already
+      .inTable("resources")
+      .onUpdate("CASCADE")
+      .onDelete("CASCADE");
+    tbl.primary(["project_id", "resource_id"]);
+  });
 };
 
 exports.down = async function (knex) {
+  await knex.schema.dropTableIfExists("resourceList");
+  await knex.schema.dropTableIfExists("tasks");
+  await knex.schema.dropTableIfExists("resources");
   await knex.schema.dropTableIfExists("projects");
 };
