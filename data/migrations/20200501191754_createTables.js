@@ -24,27 +24,27 @@ exports.up = async function (knex) {
       .onDelete("RESTRICT")
       .onUpdate("CASCADE");
   });
-  await knex.schema.createTable("resourceList", (tbl) => {
-    tbl
+  await knex.schema.createTable("resourceList", (table) => {
+    table
       .integer("project_id")
       .unsigned()
       .notNullable()
       .references("id")
-      // this table must exist already
+
       .inTable("projects")
       .onUpdate("CASCADE")
       .onDelete("CASCADE");
-    tbl
+    table
       .integer("resource_id")
-      // forces integer to be positive
+
       .unsigned()
       .notNullable()
       .references("id")
-      // this table must exist already
+
       .inTable("resources")
       .onUpdate("CASCADE")
       .onDelete("CASCADE");
-    tbl.primary(["project_id", "resource_id"]);
+    table.primary(["project_id", "resource_id"]);
   });
 };
 

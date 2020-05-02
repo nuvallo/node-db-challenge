@@ -4,6 +4,10 @@ function getProjects() {
   return db("projects");
 }
 
+function getProjectById(id) {
+  return db("projects").where({ id }).first();
+}
+
 function getResources() {
   return db("resources");
 }
@@ -34,6 +38,7 @@ function addTask(task) {
 }
 module.exports = {
   getProjects,
+  getProjectById,
   getResources,
   getTasks,
   addProject,
